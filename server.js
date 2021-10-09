@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import { getUserByEmailAndPassword } from "./Utils/helpers.js";
+import { products } from "./data/products.js";
 
 const app = express();
 const port = 3001;
@@ -29,6 +30,10 @@ app.get("/users", async (req, res, next) => {
   }
 });
 
+app.get("/products", (req, res) => {
+  res.send(JSON.stringify(products));
+});
+
 app.get("/", (req, res) => {
   const obj = new User({
     name: "Saad",
@@ -37,7 +42,6 @@ app.get("/", (req, res) => {
   });
 
   obj.save().then(() => console.log("User Added"));
-  res.send("Home");
 });
 
 app.listen(port, () => {
