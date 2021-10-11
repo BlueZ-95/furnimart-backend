@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import { getUserByEmailAndPassword } from "./Utils/helpers.js";
+import {
+  checkIfUserExists,
+  getAllUsers,
+  getUserByEmailAndPassword,
+  addUser,
+} from "./Utils/helpers.js";
 import { products } from "./data/products.js";
 
 const app = express();
@@ -30,18 +35,38 @@ app.get("/users", async (req, res, next) => {
   }
 });
 
+app.get("/addUser", async (req, res, next) => {
+  const name = req.query.name;
+  const email = req.query.email;
+  const password = req.query.password;
+
+  try {
+    const user = await checkIfUserExists(email);
+    if (!user) {
+      // Insert user in DB
+      const insertedUser = await addUser(name, email, password);
+      console.log("inserted user", insertedUser);
+      res.send(insertedUser);
+    } else {
+      throw new Error("Error! User already exists");
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get("/products", (req, res) => {
   res.send(JSON.stringify(products));
 });
 
 app.get("/", (req, res) => {
-  const obj = new User({
-    name: "Saad",
-    email: "patelsaad39@gmail.com",
-    password: "saad123",
-  });
-
-  obj.save().then(() => console.log("User Added"));
+  getAllUsers();
+  // const obj = new User({
+  //   name: "Saad",
+  //   email: "patelsaad39@gmail.com",
+  //   password: "saad123",
+  // });
+  // obj.save().then(() => console.log("User Added"));
 });
 
 app.listen(port, () => {
