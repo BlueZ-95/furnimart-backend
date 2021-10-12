@@ -70,5 +70,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Amazon-V2 server listening at http://localhost:${port}`);
+  console.log(
+    `Furnimart server started! Listening at http://localhost:${port}`
+  );
 });
