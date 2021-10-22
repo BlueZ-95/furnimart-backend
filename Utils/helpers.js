@@ -1,4 +1,4 @@
-import { User } from "./models.js";
+import { User, Product } from "./models.js";
 
 export const getAllUsers = async () => {
   let users = await User.find().exec();
@@ -7,8 +7,6 @@ export const getAllUsers = async () => {
 
 export const getUserByEmailAndPassword = async (email, password) => {
   let user = await User.findOne({ email: email, password: password }).exec();
-  // let users = await User.find().exec();
-  console.log("helpers", user);
   if (user) {
     return user;
   } else {
@@ -17,10 +15,7 @@ export const getUserByEmailAndPassword = async (email, password) => {
 };
 
 export const getUserByEmail = async (email) => {
-  console.log("get user", email);
-
   let user = await User.findOne({ email: email }).exec();
-  console.log("find user", user);
 
   if (user) {
     return user;
@@ -30,7 +25,6 @@ export const getUserByEmail = async (email) => {
 };
 
 export const addUser = async (name, email, password) => {
-  console.log("addUser", email);
   const user = new User({
     name: name,
     email: email,
@@ -42,4 +36,8 @@ export const addUser = async (name, email, password) => {
 export const checkIfUserExists = async (email) => {
   const user = await getUserByEmail(email);
   return user ? true : false;
+};
+
+export const getProducts = async () => {
+  return await Product.find().exec();
 };

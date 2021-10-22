@@ -6,6 +6,7 @@ import {
   getAllUsers,
   getUserByEmailAndPassword,
   addUser,
+  getProducts,
 } from "./Utils/helpers.js";
 import { products } from "./data/products.js";
 
@@ -55,18 +56,16 @@ app.get("/addUser", async (req, res, next) => {
   }
 });
 
-app.get("/products", (req, res) => {
-  res.send(JSON.stringify(products));
+app.get("/getProducts", async (req, res) => {
+  res.send(await getProducts());
+  // console.log(products);
+
+  // res.send(products);
+  // res.send(JSON.stringify(products));
 });
 
 app.get("/", (req, res) => {
   getAllUsers();
-  // const obj = new User({
-  //   name: "Saad",
-  //   email: "patelsaad39@gmail.com",
-  //   password: "saad123",
-  // });
-  // obj.save().then(() => console.log("User Added"));
 });
 
 app.listen(port, () => {
